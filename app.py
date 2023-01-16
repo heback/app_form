@@ -1,5 +1,10 @@
 import streamlit as st
 import datetime
+import sqlite3
+
+# 데이터베이스 연결
+con = sqlite3.connect('users.db')
+cur = con.cursor()
 
 st.subheader('회원가입 폼')
 
@@ -21,5 +26,18 @@ with st.form('my_form', clear_on_submit=True):
         if upw != upw_chk:
             st.warning('비밀번호가 일치하지 않습니다.')
             st.stop()
+
+        cur.execute(f"INSERT INTO users ("
+                    f"uid, "
+                    f"uname, "
+                    f"upw, "
+                    f"ubd, "
+                    f"ugender) VALUES ("
+                    f"'{uid}', "
+                    f"'{uname}',"
+                    f"'{upw}',"
+                    f"'{ubd}',"
+                    f"'{ugender}')")
+        con.commit()
 
         st.success(f'{uid} {uname} {upw} {ubd} {ugender}')
