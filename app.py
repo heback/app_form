@@ -2,9 +2,13 @@ import streamlit as st
 import datetime
 import sqlite3
 import pandas as pd
+import os.path
+
+file_path = os.path.dirname(__file__)
+db_file = os.path.join(file_path, 'users.db')
 
 # 데이터베이스 연결
-con = sqlite3.connect('users.db')
+con = sqlite3.connect(db_file)
 cur = con.cursor()
 
 st.subheader('회원가입 폼')
