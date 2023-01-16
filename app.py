@@ -14,4 +14,8 @@ with st.form('my_form', clear_on_submit=True):
 
     submitted = st.form_submit_button('제출')
     if submitted:
+        if len(uid) < 6:
+            st.warning('아이디는 6글자 이상이어야 합니다.')
+            st.stop()
+
         st.success('제출됨')
