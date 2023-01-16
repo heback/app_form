@@ -1,4 +1,5 @@
 import streamlit as st
+import datetime
 
 st.subheader('회원가입 폼')
 
@@ -8,7 +9,7 @@ with st.form('my_form', clear_on_submit=True):
     uname = st.text_input('성명', max_chars=8)
     upw = st.text_input('비밀번호', type='password')
     upw_chk = st.text_input('비밀번호 확인', type='password')
-    ubd = st.date_input('생년월일')
+    ubd = st.date_input('생년월일', min_value=datetime.date(1930,1,1))
 
     submitted = st.form_submit_button('제출')
     if submitted:
