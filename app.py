@@ -5,6 +5,10 @@ st.subheader('회원가입 폼')
 with st.form('my_form', clear_on_submit=True):
     st.info('다음 양식을 모두 작성한 다음 제출합니다.')
     uid = st.text_input('아이디', max_chars=12)
+    uname = st.text_input('성명', max_chars=8)
+    upw = st.text_input('비밀번호', type='password')
+    upw_chk = st.text_input('비밀번호 확인', type='password')
+    ubd = st.date_input('생년월일')
 
     submitted = st.form_submit_button('제출')
     if submitted:
