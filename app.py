@@ -1,6 +1,7 @@
 import streamlit as st
 import datetime
 import sqlite3
+import pandas as pd
 
 # 데이터베이스 연결
 con = sqlite3.connect('users.db')
@@ -41,3 +42,8 @@ with st.form('my_form', clear_on_submit=True):
         con.commit()
 
         st.success(f'{uid} {uname} {upw} {ubd} {ugender}')
+
+st.subheader('회원목록')
+
+df = pd.read_sql('SELECT * FROM users', con)
+st.dataframe(df)
