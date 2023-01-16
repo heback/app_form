@@ -18,4 +18,8 @@ with st.form('my_form', clear_on_submit=True):
             st.warning('아이디는 6글자 이상이어야 합니다.')
             st.stop()
 
-        st.success('제출됨')
+        if upw != upw_chk:
+            st.warning('비밀번호가 일치하지 않습니다.')
+            st.stop()
+
+        st.success(f'{uid} {uname} {upw} {ubd} {ugender}')
