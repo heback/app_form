@@ -3,6 +3,8 @@ import datetime
 import sqlite3
 import pandas as pd
 import os.path
+from st_aggrid import GridOptionsBuilder, \
+    AgGrid, GridUpdateMode, DataReturnMode
 
 file_path = os.path.dirname(__file__)
 db_file = os.path.join(file_path, 'users.db')
@@ -49,5 +51,47 @@ with st.form('my_form', clear_on_submit=True):
 
 st.subheader('회원목록')
 
-df = pd.read_sql('SELECT * FROM users', con)
-st.dataframe(df)
+data = pd.read_sql('SELECT * FROM users', con)
+
+gb = GridOptionsBuilder.from_dataframe(data)
+gb.configure_default_column(editable=True, groupable=True)
+# Add pagination
+gb.configure_pagination(paginationAutoPageSize=True)
+# Add a sidebar
+gb.configure_side_bar()
+# Enable multi-row selection
+gb.configure_selection(
+    'multiple',
+    use_checkbox=True
+)
+gridOptions = gb.build()
+
+grid_response = AgGrid(
+    data,
+    gridOptions=gridOptions,
+    data_return_mode='AS_INPUT',
+    update_mode='MODEL_CHANGED',
+    fit_columns_on_grid_load=True,
+    enable_enterprise_modules=True,
+    height=350,
+    reload_data=False,
+)
+
+data = grid_response['data']
+selected = grid_response['selected_rows']
+
+if selected:
+    updateBtn = st.button('수정')
+
+    if updateBtn:
+        for row in selected:
+            cur.execute(f"UPDATE users SET uname='{row['uname']}' WHERE no={row['no']}")
+        con.commit()
+        st.success('성명을 수정하였습니다.')
+
+
+
+
+# df = pd.read_sql('SELECT * FROM users', con)
+# st.dataframe(df)
+
